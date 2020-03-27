@@ -1,3 +1,4 @@
+
 const colors = {
     green: {
       wrapperBackground: "#E6E1C3",
@@ -171,4 +172,7 @@ const colors = {
             } 
            }
         </style>`
-          }
+
+      }
+      //should export to wherever file this funciton gets called in that requires this file
+      module.exports.generateHTML = generateHTML;

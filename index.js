@@ -6,18 +6,12 @@ const fs = require("fs"),
 const axios = require("axios");
 const inquirer = require("inquirer");
 const electron = require("electron");
-// html
 
 const conversion = convertFactory({
     converterPath: convertFactory.converters.PDF,
     allowLocalFilesAccess: true
 });
 
-// let data = {};
-// console.log(data)
-
-// let newHTML = generateHTML;
-// console.log(newHTML)
 let questions = [
     {
         message: 'What is your github username?',
@@ -30,18 +24,8 @@ let questions = [
         choices: ['green', 'blue', 'pink', 'red'],
     }
 ]
-// function generateHTML() to get called from gerenateHTML.js
 
-// function writeToFile(fileName, data) {
-
-// } not necessary with electron-html-to\
-// let HTML = function generateHTML(res) {
-//     return res;
-// }
-
-// let colors = generateHTML.colors;
 function init() {
-    // newHTML;
     inquirer
         .prompt(questions)
         .then(function ({ username, color }) {
@@ -97,7 +81,10 @@ function init() {
                             }
                             let newHTML = doc.generateHTML(data);
                             // create html file
-
+                            fs.writeFile('./resume.html', newHTML, (err) => { 
+                                if (err) {
+                                    return err;
+                            }});
                             // console.log(data.stars)
                             // window.ELECTRON_HTML_TO_READY = true;
                             console.log(newHTML);
@@ -111,7 +98,13 @@ function init() {
                                 //     console.log(result.numberOfPages);
                                 //     console.log(result.logs);
                                 result.stream.pipe(fs.createWriteStream('./resume.pdf'));
+
                                 conversion.kill(); // necessary if you use the electron-server strategy, see bellow for details
+                                // an error is passed but ignoring since a server is not needed for this project
+                                fstream.on('error', function(err) {
+                                    console.log("ERROR:" + err);
+                                    file.read();
+                                  });
                             })
 
                         });
